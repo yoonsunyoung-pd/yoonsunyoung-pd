@@ -48,7 +48,7 @@
     <div class="work-container" id="work-container"></div>
 
     <div class="more-work" id="more-work">
-      <a href="#" id="load-more">더 보기</a>
+      <a href="#" id="load-more">▼ 더 보기</a>
     </div>
   <section class="work-list">
 </main>
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if(currentCount < filtered.length){
       // 남은 데이터가 있으면 "더 보기"
       loadMoreLink.style.display = 'inline-block';
-      loadMoreLink.textContent = "🡻 더 보기";
+      loadMoreLink.textContent = "▼ 더 보기";
       loadMoreLink.onclick = (e) => {
         e.preventDefault();
         renderWork(category);
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if(currentCount >= filtered.length && contentOverflows){
       // 모든 데이터를 다 불러왔고 스크롤이 있으면 "위로가기"
       loadMoreLink.style.display = 'inline-block';
-      loadMoreLink.textContent = "🡹 위로 가기";
+      loadMoreLink.textContent = "▲ 위로 가기";
       loadMoreLink.onclick = (e) => {
         e.preventDefault();
         container.scrollIntoView({ behavior: "smooth", block: "start" });
