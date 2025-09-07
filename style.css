@@ -208,12 +208,12 @@ nav { position:relative; }
 .news-list {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1em 3em;
+  padding: 1em 1em 3em 1em;
 }
 .recent-news {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1em 3em;
+  padding: 1em 2em;
 }
 .news-item {
   display:flex;
@@ -225,7 +225,7 @@ nav { position:relative; }
 .news-item .date {
   font-family: "Gowun Batang", serif;
   font-weight: 200;
-  font-size: 1.2em;
+  font-size: 1em;
   color: #999;
   flex-shrink: 0;
   vertical-align: middle;
@@ -296,7 +296,7 @@ nav { position:relative; }
 .news-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 3em 1em 3em;
+  padding: 3em 1em 1em 1em;
 }
 .news-content h1 {
   font-family: "Gowun Batang";
@@ -391,7 +391,7 @@ nav { position:relative; }
   gap: 1.5em;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1em 2em 1em;
+  padding: 0 0 2em 0;
 }
 
 .work-item {
@@ -474,7 +474,7 @@ nav { position:relative; }
 .work-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 3em 1em 3em;}
+  padding: 3em 1em 1em 1em;}
 .work-content .work-categories{ 
   display: inline-block;
   padding: 0.3em 0.8em;
@@ -510,7 +510,7 @@ nav { position:relative; }
 .about-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 3em 1em 3em;}
+  padding: 3em 1em 1em 1em;}
 .about-content h2{
   font-size: 3em;
   margin: 0;
