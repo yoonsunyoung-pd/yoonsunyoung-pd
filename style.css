@@ -433,9 +433,8 @@ nav { position:relative; }
   color: #fff;
   font-size: 0.8em;
   font-weight: 700;
-  padding: 0.2em 0.5em;
+  padding: 0 0.4em;
   white-space: nowrap;
-  margin-bottom: 0.2em;
 }
 
 .work-item .work-info .title {
@@ -645,11 +644,12 @@ nav { position:relative; }
 
   .work-item .work-info .category {
     grid-column: 1;
-    margin-top:0.5em;
+    margin-top:0;
   }
 
   .work-item .work-info .title {
-    font-size:1.5em;
+    font-size:1.3em;
+    margin: 0;
     grid-column: 2;
     min-width: 0; /* 줄바꿈, ellipsis 적용 위해 필요 */
     white-space: normal;
