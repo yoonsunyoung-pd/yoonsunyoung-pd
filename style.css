@@ -208,40 +208,39 @@ nav { position:relative; }
 .news-list {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1em 1em 3em 1em;
+  padding: 1em 1.5em 3em 1.5em;
 }
 .recent-news {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1em 2em;
+  padding: 1em 1.5em;
 }
 .news-item {
   display:flex;
-  align-items: flex-start;
-  padding-bottom: 1em;
+  align-items: space-between;
+  padding-bottom: 1.2em;
   gap:1em;
 }
 
 .news-item .date {
-  font-family: "Gowun Batang", serif;
+  font-family: "SUIT Variable", sans-serif;
   font-weight: 200;
   font-size: 1em;
   color: #999;
   flex-shrink: 0;
-  vertical-align: middle;
 }
 
 .news-item .title {
-  display: inline-block;  
   font-family: "SUIT Variable", sans-serif;
   font-size: 1em;
   font-weight: 500;
   color: #000;
-  margin-top:0.1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow:1;
+  min-width:0;
   text-decoration: none;
-  vertical-align: middle;
-  word-break: break-word;
-  flex-grow: 1;
 }
 
 .news-item .title:hover {
@@ -251,8 +250,12 @@ nav { position:relative; }
 
 .pagination { text-align:center; margin-top:2em; }
 .pagination a {
-  display:inline-block; margin:0 5px; padding:0.2em 0.6em;
-  text-decoration:none; color:#000; border:none;
+  display:inline-block;
+  margin:0 5px;
+  padding:0.2em 0.6em;
+  text-decoration:none;
+  color:#000;
+  border:none;
   transition: background-color 0.3s, color 0.3s;
 }
 .pagination a.active, .pagination a:hover {
@@ -583,6 +586,31 @@ nav { position:relative; }
     padding:0;
   }
   .menu-toggle { display:block;}
+
+  .news-item {
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: flex-start;
+    gap: 0.2em;
+    margin-bottom: 0;
+  }
+
+  .news-item .title {
+    flex-basis: 100%;    
+    white-space: normal; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.2em;
+  }
+
+  .news-item .date {
+    flex-basis: 100%;
+    margin-left: auto;
+  }
+
   .work-container {
     grid-template-columns: 1fr;
     gap: 2em;

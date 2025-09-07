@@ -156,8 +156,8 @@ document.addEventListener("DOMContentLoaded", function() {
         titleLink.href = `news_detail.html?id=${item.id}`;
         titleLink.textContent = item.title_en;
 
-        article.appendChild(dateSpan);
         article.appendChild(titleLink);
+        article.appendChild(dateSpan);
         container.appendChild(article);
       });
     });
