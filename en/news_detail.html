@@ -83,11 +83,11 @@ function renderNewsDetail() {
   if (currentIndex > 0) {
     const prevLink = document.createElement('a');
     prevLink.href = `news_detail.html?id=${newsData[currentIndex - 1].id}`;
-    prevLink.textContent = '◂ Previous';
+    prevLink.textContent = '◀ Previous';
     navContainer.appendChild(prevLink);
   } else {
     const span = document.createElement('span');
-    span.textContent = '◂ Previous';
+    span.textContent = '◀ Previous';
     navContainer.appendChild(span);
   }
 
@@ -101,11 +101,11 @@ function renderNewsDetail() {
   if (currentIndex < newsData.length - 1) {
     const nextLink = document.createElement('a');
     nextLink.href = `news_detail.html?id=${newsData[currentIndex + 1].id}`;
-    nextLink.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▸';
+    nextLink.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▶';
     navContainer.appendChild(nextLink);
   } else {
     const span = document.createElement('span');
-    span.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▸';
+    span.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▶';
     navContainer.appendChild(span);
   }
 }

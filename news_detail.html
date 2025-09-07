@@ -82,11 +82,11 @@ function renderNewsDetail() {
   if (currentIndex > 0) {
     const prevLink = document.createElement('a');
     prevLink.href = `news_detail.html?id=${newsData[currentIndex - 1].id}`;
-    prevLink.textContent = '◂ 이전 글';
+    prevLink.textContent = '◀ 이전 글';
     navContainer.appendChild(prevLink);
   } else {
     const span = document.createElement('span');
-    span.textContent = '◂ 이전 글';
+    span.textContent = '◀ 이전 글';
     navContainer.appendChild(span);
   }
 
@@ -100,11 +100,11 @@ function renderNewsDetail() {
   if (currentIndex < newsData.length - 1) {
     const nextLink = document.createElement('a');
     nextLink.href = `news_detail.html?id=${newsData[currentIndex + 1].id}`;
-    nextLink.textContent = '다음 글 ▸';
+    nextLink.textContent = '다음 글 ▶';
     navContainer.appendChild(nextLink);
   } else {
     const span = document.createElement('span');
-    span.textContent = '다음 글 ▸';
+    span.textContent = '다음 글 ▶';
     navContainer.appendChild(span);
   }
 }
