@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>작업 상세 | 윤선영 YOON SUNYOUNG</title>
+
+<!-- 웹폰트 -->
+<link rel="stylesheet" href="/fonts/SUIT-Variable-woff2/SUIT-Variable.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- 스타일시트 -->
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="kr">윤선영</div>
+    <div class="en"><p>YOON</p><p>SUNYOUNG</p></div>
+  </div>
+  <nav>
+    <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+    <ul class="menu">
+      <li class="close-menu">×</li>
+      <li><a href="index.html">첫 화면</a></li>
+      <li><a href="news.html">소식</a></li>
+      <li><a href="work.html">작업</a></li>
+      <li><a href="about.html">소개</a></li>
+      <li class="lang"><a href="#" id="lang-switch" class="lang-switch"><img src="images/icon_globe.png" alt="Language" class="icon">English</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="work-content">
+  <p class="work-categories" id="work-category">카테고리</p>
+  <h1 class="work-title" id="work-title">작업 제목</h1>
+  <div id="work-thumbnail" style="margin:2em 0;">
+    <img id="thumbnail-img" src="" alt="작업 썸네일" style="width:100%; height:auto; max-height:80vh; object-fit:cover;">
+  </div>
+
+  <div id="work-detail-content"></div>
+
+  <div class="news-nav">
+    <a href="work.html">🡸 작업 목록으로</a>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 윤선영 YOON SUNYOUNG</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const params = new URLSearchParams(window.location.search);
+  const workId = parseInt(params.get("id"), 10);
+
+  const titleEl = document.getElementById("work-title");
+  const catEl = document.getElementById("work-category");
+  const contentEl = document.getElementById("work-detail-content");
+
+  fetch("work.json")
+    .then(res => res.json())
+    .then(data => {
+      const item = data.find(w => w.id === workId);
+      if (!item) {
+        titleEl.textContent = "해당 작업을 찾을 수 없습니다.";
+        return;
+      }
+
+      titleEl.textContent = item.title;
+      catEl.textContent = item.category;
+
+      const thumbnailEl = document.getElementById("thumbnail-img");
+      thumbnailEl.src = item.thumbnail;
+      thumbnailEl.alt = item.title;
+
+      // 내용 구성
+      let html = "";
+      if (item.content["소개"] && item.content["소개"]) {
+        html += `<h2>소개</h2><p>${item.content["소개"]}</p>`;
+      }
+      if (item.content["정보"] && item.content["정보"]) {
+        html += `<h2>정보</h2><p>${item.content["정보"]}</p>`;
+      }
+      if (item.content["수상"] && item.content["수상"]) {
+        html += `<h2>수상</h2><p>${item.content["수상"]}</p>`;
+      }
+      if (item.content["언론 보도"] && item.content["언론 보도"]) {
+        html += `<h2>언론 보도</h2><p>${item.content["언론 보도"]}</p>`;
+      }
+
+      if (Array.isArray(item.content["미디어"]) && item.content["미디어"].length > 0 && item.content["미디어"][0]) {
+        item.content["미디어"].forEach(media => {
+          if(media.type === "image"){
+            html += `<figure>
+                       <img src="${media.src}" alt="${media.alt}" style="max-width:100%; margin:4em 0 0 0;">
+                       ${media.caption ? `<figcaption style="text-align:center; font-size:0.9em; color:#666;">${media.caption}</figcaption>` : ""}
+                     </figure>`;
+          } else if(media.type === "youtube"){
+            html += `<figure style="margin:4em 0 0 0;">
+                       <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+                         <iframe src="${media.src}" frameborder="0" allowfullscreen
+                         style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                       </div>
+                       ${media.caption ? `<figcaption style="text-align:center; font-size:0.9em; color:#666; margin-top:0.5em;">${media.caption}</figcaption>` : ""}
+                     </figure>`;
+          }
+        });
+      }
+
+      contentEl.innerHTML = html;
+    })
+    .catch(err => {
+      console.error("작업 불러오기 실패:", err);
+      titleEl.textContent = "작업 데이터를 불러올 수 없습니다.";
+    });
+
+  // 모바일 메뉴
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  const closeMenuBtn = document.querySelector('.close-menu');
+
+  menuToggle.addEventListener('click', ()=>menu.classList.toggle('active'));
+  closeMenuBtn.addEventListener('click', ()=>menu.classList.remove('active'));
+  document.addEventListener('click', e=>{
+    const isClickInside = menu.contains(e.target) || menuToggle.contains(e.target);
+    if(!isClickInside && menu.classList.contains('active')) menu.classList.remove('active');
+  });
+  // ------------------------------
+  // 언어 전환 버튼 처리
+  // ------------------------------
+  const langSwitchBtns = document.querySelectorAll('.lang-switch');
+
+  langSwitchBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+
+      const path = window.location.pathname;  // 현재 경로
+      const search = window.location.search;  // 쿼리스트링 ?id=13 등
+      const fileName = path.split('/').pop(); // index.html, about.html 등
+
+      let targetPath = '';
+
+      // 현재 페이지가 영어(/en/)인지 확인
+      if (path.includes('/en/')) {
+        // 영어 → 한국어: 한 단계 위로 이동
+        targetPath = '../' + fileName;
+      } else {
+        // 한국어 → 영어: en/ 폴더 아래로 이동
+        targetPath = 'en/' + fileName;
+      }
+
+      window.location.href = targetPath + search;
+    });
+  });
+});
+</script>
+
+</body>
+</html>

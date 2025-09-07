@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>윤선영 | YOON SUNYOUNG</title>
+
+<!-- 웹폰트 -->
+<link rel="stylesheet" href="/fonts/SUIT-Variable-woff2/SUIT-Variable.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- 스타일시트 -->
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="kr">윤선영</div>
+    <div class="en"><p>YOON</p><p>SUNYOUNG</p></div>
+  </div>
+  <nav>
+    <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+    <ul class="menu">
+      <li class="close-menu">×</li>
+      <li><a href="index.html">첫 화면</a></li>
+      <li><a href="news.html">소식</a></li>
+      <li><a href="work.html">작업</a></li>
+      <li><a href="about.html">소개</a></li>
+      <li class="lang"><a href="#" id="lang-switch" class="lang-switch"><img src="images/icon_globe.png" alt="Language" class="icon">English</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="work-list">
+    <h1>작업</h1>
+
+    <div class="work-categories">
+      <button class="active" data-category="전체">전체</button>
+      <button data-category="영상">영상</button>
+      <button data-category="도서">도서</button>
+      <button data-category="기타">기타</button>
+    </div>
+
+    <div class="work-container" id="work-container"></div>
+
+    <div class="more-work" id="more-work">
+      <a href="#" id="load-more">더 보기</a>
+    </div>
+  <section class="work-list">
+</main>
+
+<footer>
+  <p>&copy; 윤선영 YOON SUNYOUNG</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const workPerPage = 9;
+  let currentCount = 0;
+  let workData = [];
+  const defaultThumb = './images/default_thumbnail.jpg';
+
+  const container = document.getElementById('work-container');
+  const moreBtn = document.getElementById('more-work');
+  const loadMoreLink = document.getElementById('load-more');
+
+  // JSON 불러오기
+  fetch('work.json')
+    .then(res => res.json())
+    .then(data => {
+      workData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      renderWork();
+    }).catch(err => {
+      console.error("work.json 불러오기 실패:", err);
+      container.innerHTML = '<p>작업 데이터를 불러올 수 없습니다.</p>';
+    });
+
+  function checkImage(url, callback){
+    const img = new Image();
+    img.onload = () => callback(true);
+    img.onerror = () => callback(false);
+    img.src = url;
+  }
+
+  function renderWork(category='전체') {
+    container.innerHTML = '';
+    const filtered = category === '전체' ? workData : workData.filter(item => item.category === category);
+    const toShow = filtered.slice(0, currentCount + workPerPage);
+
+    toShow.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'work-item';
+      div.onclick = () => window.location.href=`work_detail.html?id=${item.id}`;
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumbnail';
+
+      checkImage(item.thumbnail, exists => {
+        if(exists){
+          thumb.style.backgroundImage = `url('${item.thumbnail}')`;
+        } else {
+          thumb.style.backgroundImage = `url('${defaultThumb}')`;
+        }
+      });
+
+      const info = document.createElement('div');
+      info.className = 'work-info';
+
+      const cat = document.createElement('span');
+      cat.className = 'category';
+      cat.textContent = item.category;
+
+      const title = document.createElement('span');
+      title.className = 'title';
+      title.textContent = item.title;
+
+      info.appendChild(cat);
+      info.appendChild(title);
+
+      div.appendChild(thumb);
+      div.appendChild(info);
+
+      container.appendChild(div);
+    });
+
+    currentCount = toShow.length;
+
+    // 기존 이벤트 제거
+    loadMoreLink.onclick = null;
+
+    // 스크롤 존재 여부 확인
+    const contentOverflows = container.scrollHeight > window.innerHeight;
+
+    // 버튼 조건 처리
+    if(currentCount < filtered.length){
+      // 남은 데이터가 있으면 "더 보기"
+      loadMoreLink.style.display = 'inline-block';
+      loadMoreLink.textContent = "🡻 더 보기";
+      loadMoreLink.onclick = (e) => {
+        e.preventDefault();
+        renderWork(category);
+      };
+    } else if(currentCount >= filtered.length && contentOverflows){
+      // 모든 데이터를 다 불러왔고 스크롤이 있으면 "위로가기"
+      loadMoreLink.style.display = 'inline-block';
+      loadMoreLink.textContent = "🡹 위로 가기";
+      loadMoreLink.onclick = (e) => {
+        e.preventDefault();
+        container.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+    } else {
+      // 모든 데이터를 다 불러왔고 스크롤도 없으면 버튼 숨김
+      loadMoreLink.style.display = 'none';
+    }
+  }
+
+  // 카테고리 필터링
+  document.querySelectorAll('.work-categories button').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.work-categories button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCount = 0;
+      renderWork(btn.dataset.category);
+    });
+  });
+
+  // 모바일 메뉴
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  const closeMenuBtn = document.querySelector('.close-menu');
+
+  menuToggle.addEventListener('click', ()=>menu.classList.toggle('active'));
+  closeMenuBtn.addEventListener('click', ()=>menu.classList.remove('active'));
+  document.addEventListener('click', e=>{
+    const isClickInside = menu.contains(e.target) || menuToggle.contains(e.target);
+    if(!isClickInside && menu.classList.contains('active')) menu.classList.remove('active');
+  });
+  // ------------------------------
+  // 언어 전환 버튼 처리
+  // ------------------------------
+  const langSwitchBtns = document.querySelectorAll('.lang-switch');
+
+  langSwitchBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+
+      const path = window.location.pathname;  // 현재 경로
+      const search = window.location.search;  // 쿼리스트링 ?id=13 등
+      const fileName = path.split('/').pop(); // index.html, about.html 등
+
+      let targetPath = '';
+
+      // 현재 페이지가 영어(/en/)인지 확인
+      if (path.includes('/en/')) {
+        // 영어 → 한국어: 한 단계 위로 이동
+        targetPath = '../' + fileName;
+      } else {
+        // 한국어 → 영어: en/ 폴더 아래로 이동
+        targetPath = 'en/' + fileName;
+      }
+
+      window.location.href = targetPath + search;
+    });
+  });
+});
+</script>
+
+
+</body>
+</html>
