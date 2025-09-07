@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>윤선영 | YOON SUNYOUNG</title>
+
+<!-- 웹폰트 -->
+<link rel="stylesheet" href="/fonts/SUIT-Variable-woff2/SUIT-Variable.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- 스타일시트 -->
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="kr">윤선영</div>
+    <div class="en"><p>YOON</p><p>SUNYOUNG</p></div>
+  </div>
+  <nav>
+    <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+    <ul class="menu">
+      <li class="close-menu">×</li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="news.html">Updates</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="lang"><a href="#" id="lang-switch" class="lang-switch"><img src="../images/icon_globe.png" alt="Language" class="icon">한국어</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+<main>
+  <section class="news-content">
+    <div id="news-detail"></div>
+    <div class="news-nav" id="news-nav"></div>
+  </section>
+</main>
+
+<footer>
+  <p>This English site was translated using an LLM. For accurate information, please refer to the original Korean site.</p>
+  <p>&copy; 윤선영 YOON SUNYOUNG</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  let newsData = [];
+  const urlParams = new URLSearchParams(window.location.search);
+  const newsId = parseInt(urlParams.get('id')) || 1;
+
+  fetch('../news.json')
+    .then(res => res.json())
+    .then(data => {
+      newsData = data;
+      renderNewsDetail();
+    });
+
+function renderNewsDetail() {
+  const detailContainer = document.getElementById('news-detail');
+  const navContainer = document.getElementById('news-nav');
+
+  const currentIndex = newsData.findIndex(item => item.id === newsId);
+  if (currentIndex === -1) return;
+
+  const item = newsData[currentIndex];
+
+  // 날짜, 제목, 내용 분리
+  detailContainer.innerHTML = `
+    <div class="news-date">${item.date}</div>
+    <h1 class="news-title">${item.title_en}</h1>
+    <div class="news-content-text">${item.content_en}</div>
+  `;
+
+  navContainer.innerHTML = '';
+
+  // 이전 글
+  if (currentIndex > 0) {
+    const prevLink = document.createElement('a');
+    prevLink.href = `news_detail.html?id=${newsData[currentIndex - 1].id}`;
+    prevLink.textContent = '◂ Previous';
+    navContainer.appendChild(prevLink);
+  } else {
+    const span = document.createElement('span');
+    span.textContent = '◂ Previous';
+    navContainer.appendChild(span);
+  }
+
+  // 목록으로
+  const listLink = document.createElement('a');
+  listLink.href = 'news.html';
+  listLink.textContent = 'Back to List';
+  navContainer.appendChild(listLink);
+
+  // 다음 글
+  if (currentIndex < newsData.length - 1) {
+    const nextLink = document.createElement('a');
+    nextLink.href = `news_detail.html?id=${newsData[currentIndex + 1].id}`;
+    nextLink.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▸';
+    navContainer.appendChild(nextLink);
+  } else {
+    const span = document.createElement('span');
+    span.textContent = '\u00A0\u00A0\u00A0\u00A0Next ▸';
+    navContainer.appendChild(span);
+  }
+}
+
+
+  // 모바일 메뉴 토글
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  const closeMenuBtn = document.querySelector('.close-menu');
+
+  menuToggle.addEventListener('click', () => menu.classList.toggle('active'));
+  closeMenuBtn.addEventListener('click', () => menu.classList.remove('active'));
+  document.addEventListener('click', e => {
+    const isClickInside = menu.contains(e.target) || menuToggle.contains(e.target);
+    if (!isClickInside && menu.classList.contains('active')) menu.classList.remove('active');
+  });
+  // ------------------------------
+  // 언어 전환 버튼 처리
+  // ------------------------------
+  const langSwitchBtns = document.querySelectorAll('.lang-switch');
+
+  langSwitchBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+
+      const path = window.location.pathname;  // 현재 경로
+      const search = window.location.search;  // 쿼리스트링 ?id=13 등
+      const fileName = path.split('/').pop(); // index.html, about.html 등
+
+      let targetPath = '';
+
+      // 현재 페이지가 영어(/en/)인지 확인
+      if (path.includes('/en/')) {
+        // 영어 → 한국어: 한 단계 위로 이동
+        targetPath = '../' + fileName;
+      } else {
+        // 한국어 → 영어: en/ 폴더 아래로 이동
+        targetPath = 'en/' + fileName;
+      }
+
+      window.location.href = targetPath + search;
+    });
+  });
+});
+</script>
+
+</body>
+</html>
