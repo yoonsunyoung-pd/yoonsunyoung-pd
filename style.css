@@ -4,6 +4,7 @@ body, html {
   width:100%;
   height:100%;
   font-family:'SUIT Variable', sans-serif;
+  line-height: 1.5em;
   background-color:#fff;
   min-width:320px;
   font-weight: 300;
@@ -136,11 +137,13 @@ nav { position:relative; }
   font-weight: 700;
   font-family:"Gowun Batang", sans-serif;
   text-align: center;
+  line-height: 1em;
 }
 
 .slider-intro p {
   font-size: 1.2em;
   text-align: left;
+  line-height: 1.5em;
 }
 
 /* 화살표 */
@@ -299,7 +302,7 @@ nav { position:relative; }
 .news-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 1em 1em 1em;
+  padding: 3em 1.5em 1em 1.5em;
 }
 .news-content h1 {
   font-family: "Gowun Batang";
@@ -477,7 +480,7 @@ nav { position:relative; }
 .work-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 1em 1em 1em;}
+  padding: 3em 1.5em 1em 1.5em;}
 .work-content .work-categories{ 
   display: inline-block;
   padding: 0.3em 0.8em;
@@ -492,7 +495,7 @@ nav { position:relative; }
   font-weight: 700;
   font-family: 'SUIT Variable', sans-serif;
   text-align: left;       
-  margin-bottom: 1em;
+  margin: 0.3em 0 1em 0;
   line-height: 1.2em;
   word-break: break-word;}
 .work-content h2{
@@ -513,26 +516,24 @@ nav { position:relative; }
 .about-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 3em 1em 1em 1em;}
+  padding: 3em 1.5em 1em 1.5em;}
 .about-content h2{
   font-size: 3em;
-  margin: 0;
+  margin: 1em 0 0.2em 0;
   font-weight: 900;
+  line-height:1em;
 }
 .about-content h3{
   font-size: 1.4em;
   margin: 0 0 1em 0;
   font-weight:700;
+  line-height:1.2em;
 }
 .about-content h4{
   font-size: 1.5em;
   margin: 2em 0 0.5em 0;
 }
 .about-content p{
-  font-size: 1em;
-  margin: 0 0 1em 0;
-}
-.about-content li{
   font-size: 1em;
   margin: 0 0 0.5em 0;
 }
@@ -544,18 +545,19 @@ nav { position:relative; }
 .about-content tr{
   border:none;
   vertical-align: top;
-  line-height: 2;
 }
 .about-content td.col1{
   border:none;
-  width: 7.5em;
+  width: 7em;
+  font-weight: 700;
 }
 .about-content td.col2{
   border:none;
 }
 .about-content td.col3{
   border:none;
-  width: 4em;
+  width: 3.5em;
+  font-weight: 700;
 }
 
 
@@ -655,5 +657,11 @@ nav { position:relative; }
     display: -webkit-box;
     -webkit-line-clamp: 2; /* 제목 최대 몇 줄인지 */
     -webkit-box-orient: vertical;
+  }
+  .about-content h2{
+    text-align: center;
+  }
+  .about-content h3{
+    text-align: center;
   }
 }
