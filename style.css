@@ -398,7 +398,7 @@ nav { position:relative; }
   gap: 1.5em;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 0 2em 0;
+  padding: 0 1em 2em 1em;
 }
 
 .work-item {
@@ -617,7 +617,7 @@ nav { position:relative; }
   .work-container {
     grid-template-columns: 1fr;
     gap: 2em;
-    margin: 1em;
+    margin: 0.5em;
   }
 
   .work-item {
