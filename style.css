@@ -35,6 +35,7 @@ header {
   font-family: "Gowun Batang", sans-serif;
   font-weight:700;
   font-size:2em;
+  line-height:1.5em;
 }
 .logo .en{
   padding-left:0.5em;
@@ -42,8 +43,8 @@ header {
   font-family: "Gowun Batang", sans-serif;
   font-weight:700;
   font-size: 1em;
-  line-height:1em;
-  word-spacing:-0.1em;}
+  word-spacing:-0.1em;
+  line-height: 1em;}
 
 /* 메인 */
 main {padding:0;}
